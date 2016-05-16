@@ -1,6 +1,49 @@
 <!doctype html>
 <html><head><title>REPLmark</title></head><body>
-<p>Bookmark the following link.</p>
-<p><a href="javascript:var d=document,e=d.createElement.bind(d),c=e('div'),i=e('input'),a=c.appendChild,s=c.style,t=i.style;s.left=s.top=0;s.zIndex=9e9;s.position='fixed';s.width='50%';t.width='100%';c.onkeypress=function(e){(e.keyCode||e.which)-13?0:eval(i.value)};a.call(c,i);void(a.call(d.body,c))">REPLmark</a></p>
-<p>Then follow the bookmark to get a REPL. For some mobile browsers, you have to find it by typing REPLmark in the URL bar; choosing it in the bookmark menu won't work.</p>
+<button onclick="replize()">Try Me</button>
+<p>Bookmark the following:</p>
+<script>
+function replize() {
+   window.REPLmark = window.REPLmark || (function (eval) {
+   var d = document, c = d.createElement.bind(d);
+   var overlay = c('div');
+   overlay.style.cssText = 'display:none;width:100vw;height:100vh;position:fixed;top:0;left:0;z-index:2147483647;opacity:0.8;background-color:#fff';
+   var hist = c('div');
+   var form = c('form');
+   var input = c('input');
+   var clear = c('span'); clear.textContent = '\u232b';
+   var close = c('span'); close.textContent = '\u2303';
+   form.onsubmit = function(e) {
+     e.preventDefault();
+     e.stopPropagation();
+     var x = c('div');
+     try {
+       x.textContent = eval(input.value);
+     } catch(err) {
+       x.textContent = err;
+       x.style.backgroundColor = '#fdd';
+     }
+     hist.appendChild(x);
+     input.value = '';
+   };
+   clear.onclick = function() {
+     for(var x;x = hist.firstChild;hist.removeChild(x));
+   };
+   close.onclick = function() {
+     overlay.style.display = 'none';
+   };
+   overlay.appendChild(hist);
+   form.appendChild(input); form.appendChild(clear); form.appendChild(close);
+   overlay.appendChild(form);
+   d.body.appendChild(overlay);
+   return function() { overlay.style.display = 'block' }
+ })(function(s) { return eval(s) });
+ window.REPLmark()
+}
+var marklet = document.createElement('pre');
+var text = replize.toString();
+text = text.slice(text.indexOf('{') + 1, text.lastIndexOf('}')).trim().replace('\s+',' ');
+marklet.textContent = 'javascript:' + encodeURIComponent(text);
+document.body.appendChild(marklet);
+</script>
 </body></html>
