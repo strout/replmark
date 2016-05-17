@@ -42,7 +42,7 @@ function replize() {
 }
 var marklet = document.createElement('pre');
 var text = replize.toString();
-text = text.slice(text.indexOf('{') + 1, text.lastIndexOf('}')).trim().replace('\s+',' ');
+text = text.slice(text.indexOf('{') + 1, text.lastIndexOf('}')).trim().replace(/\s+/m, ' ').replace(/ (?!\w)/,'').replace(/(\W) /,function($0,$1){return $1});
 marklet.textContent = 'javascript:' + encodeURIComponent(text);
 document.body.appendChild(marklet);
 </script>
