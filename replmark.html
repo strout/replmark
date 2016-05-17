@@ -5,14 +5,17 @@
 <script>
 function replize() {
    window.REPLmark = window.REPLmark || (function (eval) {
-   var d = document, c = d.createElement.bind(d);
-   var overlay = c('div');
+   var d = document,
+   c = d.createElement.bind(d),
+   overlay = c('div'),
+   hist = c('div'),
+   form = c('form'),
+   input = c('input'),
+   clear = c('span'),
+   close = c('span');
    overlay.style.cssText = 'display:none;width:100vw;height:100vh;position:fixed;top:0;left:0;z-index:2147483647;opacity:0.8;background-color:#fff';
-   var hist = c('div');
-   var form = c('form');
-   var input = c('input');
-   var clear = c('span'); clear.textContent = '\u232b';
-   var close = c('span'); close.textContent = '\u2303';
+  clear.textContent = '\u232b';
+  close.textContent = '\u2303';
    form.onsubmit = function(e) {
      e.preventDefault();
      e.stopPropagation();
